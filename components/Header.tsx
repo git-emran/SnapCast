@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import DropdownList from "./DropdownList";
 
 interface SharedHeaderProps {
   subheader: string;
@@ -62,7 +63,7 @@ const Header = ({ subheader, title, userImg }: SharedHeaderProps) => {
             width={16}
           />
         </div>
-        {`<DropDownList />`}
+        <DropdownList />
       </section>
     </header>
   );
