@@ -4,7 +4,7 @@ const Page = async ({ params }: ParamWithSearch) => {
   const { id } = await params;
   return (
     <div className="wrapper page">
-      <Header subheader="emrn.hossn@gmail.com " title="Emran Web Dev" />
+      <Header subheader="emrn.hossn@gmail.com " title="Emran Web Dev" userImg="/assets/images/dummy.jpg" />
       USER ID: {id}
     </div>
   );
