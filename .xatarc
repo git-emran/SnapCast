@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Emran-Hossain-s-workspace-euiqti.us-east-1.xata.sh/db/snapcast-data",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
