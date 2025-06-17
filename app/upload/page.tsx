@@ -4,9 +4,10 @@ import FileInput from "@/components/FileInput";
 import FormField from "@/components/FormField";
 import { MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE } from "@/constants";
 import { useFileInput } from "@/lib/hooks/useFileInput";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 
 const Page = () => {
+  const [isSubmitting, setisSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -15,14 +16,39 @@ const Page = () => {
   const video = useFileInput(MAX_VIDEO_SIZE);
   const thumbnail = useFileInput(MAX_THUMBNAIL_SIZE);
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
-  const handleInputChange = (e: ChangeEvent) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setisSubmitting(true);
+
+    try {
+      if(!video.file || !thumbnail.file) {
+        setError("Please upload video and thumbnail")
+        return
+      }
+      if (!formData.title || !formData.description) {
+        setError("Please fill in the details")
+        return
+      }
+
+      //upload the video to bunny
+      //upload the thumbnail to DB
+      //Attach thumbnail
+      //Create a new db entry for the video details (urls, data)
+    } catch (error) {
+      console.log("Error Submitting Form", error);
+    } finally {
+      setisSubmitting(false)
+    }
   };
 
   return (
@@ -32,7 +58,7 @@ const Page = () => {
 
       <form
         className="rounded-20 shadow-10 gap-6 w-full flex flex-col px-5 py-7.5"
-        action=""
+        onSubmit={handleSubmit}
       >
         <FormField
           id="title"
@@ -55,6 +81,7 @@ const Page = () => {
           accept="video/*"
           file={video.file}
           previewUrl={video.previewUrl}
+          inputRef={video.inputRef}
           onChange={video.handleFileChange}
           onReset={video.resetFile}
           type="video"
@@ -64,6 +91,7 @@ const Page = () => {
           label="Thumbnail"
           accept="image/*"
           file={thumbnail.file}
+          inputRef={thumbnail.inputRef}
           previewUrl={thumbnail.previewUrl}
           onChange={thumbnail.handleFileChange}
           onReset={thumbnail.resetFile}
@@ -80,6 +108,9 @@ const Page = () => {
             { value: "private", label: "Private" },
           ]}
         />
+        <button type="submit" disabled={isSubmitting} className="submit-button">
+          {isSubmitting ? "Uploading..." : "Upload Video"}
+        </button>
       </form>
     </div>
   );
