@@ -25,7 +25,7 @@ const FileInput = ({
   type,
 }: FileInputProps) => {
   return (
-    <section className="file-input">
+    <section className="file-input cursor-pointer">
       <label htmlFor={id}>{label}</label>
       <input
         type="file"
@@ -47,12 +47,12 @@ const FileInput = ({
         </figure>
       ) : (
         <div>
-          {type === "video" ? (
-            <video src={previewUrl} controls />
-          ) : (
-            <Image src={previewUrl} alt="image" fill />
-          )}
           <button type="button" onClick={onReset}>
+            {type === "video" ? (
+              <video src={previewUrl} controls />
+            ) : (
+              previewUrl && <Image src={previewUrl} alt="image" fill />
+            )}
             <Image
               src="assets/icons/close.svg"
               alt="close"
@@ -60,7 +60,7 @@ const FileInput = ({
               height={16}
             />
           </button>
-          <p>{file.name}</p>
+          {file && <p>{file.name}</p>}
         </div>
       )}
     </section>
