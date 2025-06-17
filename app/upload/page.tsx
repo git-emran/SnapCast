@@ -21,7 +21,7 @@ const Page = () => {
     }));
   };
   return (
-    <main className="wrapper-md upload-page">
+    <div className="wrapper-md upload-page">
       <h1>Upload a video</h1>
       {error && <div className="error-field">{error}</div>}
 
@@ -66,17 +66,16 @@ const Page = () => {
       />
       <FormField
         id="visibility"
-        label="visibility"
+        label="Visibility"
         onChange={handleInputChange}
-        placeholder="Describe what this video is about."
         value={formData.visibility}
-        as="textarea"
+        as="select"
         options={[
           { value: "public", label: "Public" },
           { value: "private", label: "Private" },
         ]}
       />
-    </main>
+    </div>
   );
 };
 
