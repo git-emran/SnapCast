@@ -7,7 +7,7 @@ interface FileInputProps {
   accept: string;
   file: File | null;
   previewUrl: string | null;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | null> | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onReset: () => void;
   type?: "video" | "image";

@@ -3,7 +3,11 @@
 import FileInput from "@/components/FileInput";
 import FormField from "@/components/FormField";
 import { MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE } from "@/constants";
-import { getVideoUploadUrl, saveVideoDetails, getThumbnailUploadUrl } from "@/lib/actions/video";
+import {
+  getVideoUploadUrl,
+  saveVideoDetails,
+  getThumbnailUploadUrl,
+} from "@/lib/actions/video";
 import { useFileInput } from "@/lib/hooks/useFileInput";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
@@ -26,7 +30,7 @@ const uploadFileToBunny = (
 };
 
 const Page = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [isSubmitting, setisSubmitting] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
 
@@ -101,9 +105,7 @@ const Page = () => {
         ...formData,
         duration: videoDuration,
       });
-      router.push(`/video/${videoId}`)
-
-      
+      router.push(`/video/${videoId}`);
     } catch (error) {
       console.log("Error Submitting Form", error);
     } finally {
