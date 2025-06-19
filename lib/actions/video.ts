@@ -7,6 +7,8 @@ import { BUNNY } from "@/constants";
 import { db } from "@/drizzle/db";
 import { videos } from "@/drizzle/schema";
 import { revalidatePath } from "next/cache";
+import aj from "../arcjet";
+import { fixedWindow, request } from "@arcjet/next";
 
 // Define the VideoDetails type if not imported from elsewhere
 type VideoDetails = {
@@ -43,6 +45,23 @@ const revalidatePaths = (paths: string[]) => {
 };
 
 //Validate with arcjet
+const validateWithArcjet = async (fingerprint: string) => {
+  const rateLimit = aj.withRule(
+    fixedWindow({
+      mode: "LIVE",
+      window: "1m",
+      max: 2,
+      characteristics: ["fingerprint"],
+    })
+  );
+  const req = await request();
+  const decision = await rateLimit.protect(req, { fingerprint });
+
+  if (decision.isDenied()) {
+    throw new Error("Rate Limit exceeded");
+  }
+};
+
 
 // Server Actions
 
