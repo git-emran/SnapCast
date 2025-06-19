@@ -5,7 +5,8 @@ import { headers } from "next/headers";
 import { auth } from "../auth";
 import { BUNNY } from "@/constants";
 import { db } from "@/drizzle/db";
-import { videos } from "@/drizzle/schema"; // Make sure this path matches your project structure
+import { videos } from "@/drizzle/schema";
+import { revalidatePath } from "next/cache";
 
 // Define the VideoDetails type if not imported from elsewhere
 type VideoDetails = {
@@ -13,14 +14,13 @@ type VideoDetails = {
   title: string;
   description: string;
   thumbnailUrl: string;
-  duration: number
+  duration: number;
   // Add other fields as needed
 };
 
 // Define the BunnyVideoResponse type based on expected API response
 type BunnyVideoResponse = {
   guid: string;
-  // Add other fields as needed from the Bunny API response
 };
 
 const VIDEO_STREAM_BASE_URL = BUNNY.STREAM_BASE_URL;
@@ -39,8 +39,11 @@ const getSessionUserId = async (): Promise<string> => {
   return session.user.id;
 };
 const revalidatePaths = (paths: string[]) => {
-  paths.forEach((path) => revalidatePaths(path));
+  paths.forEach((path) => revalidatePath(path));
 };
+
+//Validate with arcjet
+
 // Server Actions
 
 export const getVideoUploadUrl = withErrorHandling(async () => {
@@ -80,7 +83,9 @@ export const saveVideoDetails = withErrorHandling(
   async (videoDetails: VideoDetails) => {
     const userId = await getSessionUserId();
 
-    const videoResponse = await apiFetch<BunnyVideoResponse>(
+    await validateWithArcjet(userId);
+
+    await apiFetch<BunnyVideoResponse>(
       `${VIDEO_STREAM_BASE_URL}/${BUNNY_LIBRARY_ID}/videos/${videoDetails.videoId}`,
       {
         method: "POST",
@@ -97,6 +102,7 @@ export const saveVideoDetails = withErrorHandling(
       userId,
       createdAt: new Date(),
       updatedAt: new Date(),
+      visibility: "private",
     });
 
     revalidatePaths(["/"]);
