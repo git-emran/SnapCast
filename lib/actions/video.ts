@@ -128,3 +128,19 @@ export const saveVideoDetails = withErrorHandling(
     return { videoId: videoDetails.videoId };
   }
 );
+
+
+export const getAllVideos = withErrorHandling(async(
+  searchQuery?: string,
+  softFilter?: string,
+  pageNumber: number = 1,
+  pageSize: number = 8,
+) => {
+  
+  const session = await auth.api.getSession({headers: await headers()})
+  const currentUserId = session?.user.id
+  const visibilityCondition = or(
+    eq(videos.visibility, 'public')
+  )
+
+})
