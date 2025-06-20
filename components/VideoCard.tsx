@@ -1,17 +1,18 @@
 "use client";
 
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 interface VideoCardProps {
-  id: string;
-  title: string;
+  id?: string;
+  title?: string;
   thumbnail: string;
-  username: string;
-  createdAt: Date;
-  userImg: string;
-  views: number;
-  visibility: string;
-  duration?: number;
+  username?: string;
+  createdAt?: Date;
+  userImg: string | StaticImport;
+  views?: number | null;
+  visibility?: string;
+  duration?: number | null;
 }
 
 const VideoCard = ({
@@ -61,11 +62,13 @@ const VideoCard = ({
         </div>
         <h2>
           {title} - {""}{" "}
-          {createdAt.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
+          {createdAt
+            ? createdAt.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })
+            : ""}
         </h2>
       </article>
       <button onClick={() => {}} className="copy-btn">

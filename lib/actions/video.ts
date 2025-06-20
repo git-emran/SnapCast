@@ -1,20 +1,22 @@
 "use server";
 
-import { apiFetch, getEnv, withErrorHandling } from "../utils";
+import { apiFetch, doesTitleMatch, getEnv, withErrorHandling, getOrderByClause } from "../utils";
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { BUNNY } from "@/constants";
 import { db } from "@/drizzle/db";
-import { videos } from "@/drizzle/schema";
+import { user, videos } from "@/drizzle/schema";
 import { revalidatePath } from "next/cache";
 import aj from "../arcjet";
 import { fixedWindow, request } from "@arcjet/next";
+import { or, eq, and, sql, SQLWrapper } from "drizzle-orm";
+
 
 // Define the VideoDetails type if not imported from elsewhere
 type VideoDetails = {
-  videoId: string;
+  videoId: string | SQLWrapper;
   title: string;
-  description: string;
+  description: string ;
   thumbnailUrl: string;
   duration: number;
   // Add other fields as needed
@@ -43,6 +45,16 @@ const getSessionUserId = async (): Promise<string> => {
 const revalidatePaths = (paths: string[]) => {
   paths.forEach((path) => revalidatePath(path));
 };
+const buildVideoWithUserQuery=()=>{
+  return db 
+  .select({
+    video: videos, 
+    user: {id: user.id, name: user.name, image: user.image}
+  })
+  .from(videos)
+  .leftJoin(user, eq(videos.userId, user.id))
+}
+
 
 //Validate with arcjet
 const validateWithArcjet = async (fingerprint: string) => {
@@ -61,7 +73,6 @@ const validateWithArcjet = async (fingerprint: string) => {
     throw new Error("Rate Limit exceeded");
   }
 };
-
 
 // Server Actions
 
@@ -88,7 +99,7 @@ export const getThumbnailUploadUrl = withErrorHandling(
   async (videoId: string) => {
     const fileName = `${Date.now()}-${videoId}-thumbnail`;
     const uploadUrl = `${THUMBNAIL_STORAGE_BASE_URL}/thumbnails/${fileName}`;
-    const cdnUrl = `${THUMBNAIL_CDN_URL}/thumbnais/${fileName}`;
+    const cdnUrl = `${THUMBNAIL_CDN_URL}/thumbnails/${fileName}`;
 
     return {
       uploadUrl,
@@ -111,7 +122,7 @@ export const saveVideoDetails = withErrorHandling(
         bunnyType: "stream",
         body: {
           title: videoDetails.title,
-          description: videoDetails,
+          description: videoDetails.description,
         },
       }
     );
@@ -129,18 +140,51 @@ export const saveVideoDetails = withErrorHandling(
   }
 );
 
+export const getAllVideos = withErrorHandling(
+  async (
+    searchQuery?: string,
+    sortFilter?: string,
+    pageNumber: number = 1,
+    pageSize: number = 8
+  ) => {
+    const session = await auth.api.getSession({ headers: await headers() });
+    const currentUserId = session?.user.id;
 
-export const getAllVideos = withErrorHandling(async(
-  searchQuery?: string,
-  softFilter?: string,
-  pageNumber: number = 1,
-  pageSize: number = 8,
-) => {
-  
-  const session = await auth.api.getSession({headers: await headers()})
-  const currentUserId = session?.user.id
-  const visibilityCondition = or(
-    eq(videos.visibility, 'public')
-  )
+    const canSeeTheVideos = or(
+      eq(videos.visibility, "public"),
+      eq(videos.userId, currentUserId)
+    );
+    const whereCondition = searchQuery?.trim()
+      ? and(canSeeTheVideos, doesTitleMatch(videos, searchQuery))
+      : canSeeTheVideos;
 
-})
+    const [{ totalCount }] = await db
+      .select({ totalCount: sql<number>`count(*)` })
+      .from(videos)
+      .where(whereCondition);
+
+    const totalVideos = Number(totalCount || 0);
+    const totalPages = Math.ceil(totalVideos / pageSize);
+    const videoRecords = await buildVideoWithUserQuery()
+      .where(whereCondition)
+      .orderBy(
+        sortFilter
+          ? getOrderByClause(sortFilter)
+          : sql`${videos.createdAt} DESC`
+      )
+      .limit(pageSize)
+      .offset((pageNumber - 1) * pageSize);
+
+    
+    return {
+      videos: videoRecords,
+      pagination: {
+        currentPage: pageNumber, 
+        totalPages,
+        totalVideos,
+        pageSize,
+
+      }
+    }
+  }
+);
