@@ -1,6 +1,12 @@
 "use server";
 
-import { apiFetch, doesTitleMatch, getEnv, withErrorHandling, getOrderByClause } from "../utils";
+import {
+  apiFetch,
+  doesTitleMatch,
+  getEnv,
+  withErrorHandling,
+  getOrderByClause,
+} from "../utils";
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { BUNNY } from "@/constants";
@@ -11,12 +17,11 @@ import aj from "../arcjet";
 import { fixedWindow, request } from "@arcjet/next";
 import { or, eq, and, sql, SQLWrapper } from "drizzle-orm";
 
-
 // Define the VideoDetails type if not imported from elsewhere
 type VideoDetails = {
   videoId: string | SQLWrapper;
   title: string;
-  description: string ;
+  description: string;
   thumbnailUrl: string;
   duration: number;
   // Add other fields as needed
@@ -45,16 +50,15 @@ const getSessionUserId = async (): Promise<string> => {
 const revalidatePaths = (paths: string[]) => {
   paths.forEach((path) => revalidatePath(path));
 };
-const buildVideoWithUserQuery=()=>{
-  return db 
-  .select({
-    video: videos, 
-    user: {id: user.id, name: user.name, image: user.image}
-  })
-  .from(videos)
-  .leftJoin(user, eq(videos.userId, user.id))
-}
-
+const buildVideoWithUserQuery = () => {
+  return db
+    .select({
+      video: videos,
+      user: { id: user.id, name: user.name, image: user.image },
+    })
+    .from(videos)
+    .leftJoin(user, eq(videos.userId, user.id));
+};
 
 //Validate with arcjet
 const validateWithArcjet = async (fingerprint: string) => {
@@ -175,16 +179,22 @@ export const getAllVideos = withErrorHandling(
       .limit(pageSize)
       .offset((pageNumber - 1) * pageSize);
 
-    
     return {
       videos: videoRecords,
       pagination: {
-        currentPage: pageNumber, 
+        currentPage: pageNumber,
         totalPages,
         totalVideos,
         pageSize,
-
-      }
-    }
+      },
+    };
   }
 );
+
+export const getVideoById = withErrorHandling(async (videoId: string) => {
+  const [videoRecord] = await buildVideoWithUserQuery().where(
+    eq(videos.id, videoId)
+  );
+
+  return videoRecord;
+});
