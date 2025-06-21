@@ -1,3 +1,4 @@
+import VideoDetailHeader from "@/components/VideoDetailHeader";
 import VideoPlayer from "@/components/VideoPlayer";
 import { getVideoById } from "@/lib/actions/video";
 import { redirect } from "next/navigation";
@@ -8,10 +9,10 @@ const Page = async ({ params }: Params) => {
   if (!video) redirect("404");
   return (
     <main className="wrapper page">
-      <h1 className="text-2xl"> {video.title}</h1>
+      <VideoDetailHeader />
       <section className="video-details">
         <div className="content" >
-          <VideoPlayer videoId={video.id} />
+          <VideoPlayer videoId={video.videoId} />
         </div>
       </section>
     </main>
