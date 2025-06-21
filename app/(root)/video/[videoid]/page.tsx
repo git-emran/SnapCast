@@ -1,17 +1,17 @@
 import VideoDetailHeader from "@/components/VideoDetailHeader";
 import VideoPlayer from "@/components/VideoPlayer";
 import { getVideoById } from "@/lib/actions/video";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const Page = async ({ params }: Params) => {
   const { videoId } = await params;
   const { user, video } = await getVideoById(videoId);
-  if (!video) redirect("404");
+  if (!video) notFound();
   return (
     <main className="wrapper page">
       <VideoDetailHeader />
       <section className="video-details">
-        <div className="content" >
+        <div className="content">
           <VideoPlayer videoId={video.videoId} />
         </div>
       </section>
