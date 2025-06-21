@@ -9,7 +9,7 @@ const Page = async ({ params }: Params) => {
   if (!video) notFound();
   return (
     <main className="wrapper page">
-      <VideoDetailHeader />
+      <VideoDetailHeader {...video} userImg={user?.image} username={user?.name} ownerId={video.userId} />
       <section className="video-details">
         <div className="content">
           <VideoPlayer videoId={video.videoId} />
