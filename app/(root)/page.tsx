@@ -13,7 +13,7 @@ interface SearchParams {
 }
 
 const Page = async ({ searchParams }: SearchParams) => {
-  const { query, filter, page } = searchParams;
+  const { query, filter, page } = await searchParams;
   const { videos, pagination } = await getAllVideos(
     query,
     filter,
