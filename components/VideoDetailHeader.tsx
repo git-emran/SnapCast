@@ -14,12 +14,13 @@ const VideoDetailHeader = ({
   ownerId,
   visibility,
   thumbnailUrl,
+  id,
 }: VideoDetailHeaderProps) => {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/video/${videoId}`);
+    navigator.clipboard.writeText(`${window.location.origin}/video/${id}`);
     setCopied(true);
   };
 
