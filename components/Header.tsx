@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import DropdownList from "./DropdownList";
+import RecordScreen from "./RecordScreen";
 
 interface SharedHeaderProps {
   subheader: string;
@@ -37,17 +38,7 @@ const Header = ({ subheader, title, userImg }: SharedHeaderProps) => {
             />
             <span>Upload a video</span>
           </Link>
-          <div className="record">
-            <button className="primary-btn">
-              <Image
-                src="/assets/icons/record.svg"
-                alt="record"
-                height={16}
-                width={16}
-              />
-              <span>Record a video</span>
-            </button>
-          </div>
+        <RecordScreen />
         </aside>
       </section>
       <section className="search-filter">
