@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { ICONS } from "@/constants";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useScreenRecording } from "@/lib/hooks/useScreenRecording";
 
 const RecordScreen = () => {
@@ -50,7 +50,58 @@ const RecordScreen = () => {
         />
         {isOpen && (
           <section className="dialog">
-            <div className="overlay-record" onClick={}></div>
+            <div className="overlay-record" onClick={closeModal}>
+              <div className="dialog-content">
+                <figure>
+                  <h3>Screen Recording</h3>
+                  <button onClick={closeModal}>
+                    <Image
+                      src={ICONS.close}
+                      alt="Close"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                </figure>
+                <section>
+                  {isRecording ? (
+                    <article>
+                      <div>
+                        <span>Recording in Progress</span>
+                      </div>
+                    </article>
+                  ) : recordedVideoUrl ? (
+                    <video ref={videoRef} src={recordedVideoUrl} />
+                  ) : (
+                    <p>Click record to start capturing your screen</p>
+                  )}
+                </section>
+                <div className="record-box">
+                  {!isRecording && !recordedVideoUrl && (
+                    <button onClick={handleStart} className="record-start">
+                      <Image
+                        src={ICONS.record}
+                        alt="Record"
+                        width={16}
+                        height={16}
+                      />
+                      Record
+                    </button>
+                  )}
+                  {isRecording && (
+                    <button className="record-stop">
+                      <Image
+                        src={ICONS.record}
+                        alt="Record-stop"
+                        width={16}
+                        height={16}
+                      />
+                      Stop Recording
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
           </section>
         )}
         <span>Record a video</span>
