@@ -33,16 +33,12 @@ const Page = () => {
                 />
               ))}
             </figure>
-            <article>
-              <div>
-                <p>
-                  Snapcast makes screening and sharing videos a breeze. The
-                  interface is intuitive, and it is perfect for both personal
-                  and professional use.
-                </p>
-                <h2>SnapCast | Designed &Built By Emran Hossain</h2>
-              </div>
-            </article>
+            <p>
+              Snapcast makes screening and sharing videos a breeze. The
+              interface is intuitive, and it is perfect for both personal and
+              professional use.
+            </p>
+            <h2>SnapCast | Designed &Built By Emran Hossain</h2>
           </section>
         </div>
         <p>Snapcast {new Date().getFullYear()}</p>
