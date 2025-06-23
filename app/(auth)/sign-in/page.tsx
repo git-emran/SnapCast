@@ -19,7 +19,6 @@ const Page = () => {
             width={32}
           />
           <h1>SnapCast</h1>
-          <h2>By Emran Hossain</h2>
         </Link>
         <div className="description">
           <section>
@@ -34,15 +33,14 @@ const Page = () => {
                 />
               ))}
             </figure>
-            <p>
-              Snapcast makes screening and sharing videos a breeze. The
-              interface is intuitive, and it is perfect for both personal and
-              professional use.
-            </p> 
             <article>
               <div>
-                <h2>Peri Mukuben</h2>
-                <p>Product Designer, NovaByte</p>
+                <p>
+                  Snapcast makes screening and sharing videos a breeze. The
+                  interface is intuitive, and it is perfect for both personal
+                  and professional use.
+                </p>
+                <h2>SnapCast | Designed &Built By Emran Hossain</h2>
               </div>
             </article>
           </section>
