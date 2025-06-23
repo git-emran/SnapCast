@@ -22,8 +22,6 @@ const Page = async ({ searchParams }: SearchParams) => {
   return (
     <main className="wrapper page">
       <Header title="All videos" subheader="Public Library" />
-
-  
     </main>
   );
 };

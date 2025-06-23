@@ -13,6 +13,7 @@ interface VideoCardProps {
   views?: number | null;
   visibility?: string;
   duration?: number | null;
+
 }
 
 const VideoCard = ({
@@ -39,7 +40,7 @@ const VideoCard = ({
         <div>
           <figure>
             <Image
-              src={userImg}
+              src={userImg || ""}
               alt="avatar"
               width={34}
               height={34}
@@ -70,6 +71,7 @@ const VideoCard = ({
               })
             : ""}
         </h2>
+        
       </article>
       <button onClick={() => {}} className="copy-btn">
         <Image src="/assets/icons/link.svg" alt="copy" width={18} height={18} />

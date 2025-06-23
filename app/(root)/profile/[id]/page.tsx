@@ -1,8 +1,7 @@
-
 import Header from "@/components/Header";
 import VideoCard from "@/components/VideoCard";
 import { getAllVideosByUser } from "@/lib/actions/video";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 
 type ParamWithSearch = {
@@ -13,12 +12,12 @@ type ParamWithSearch = {
 };
 
 const Page = async ({ params, searchParams }: ParamWithSearch) => {
-  const { id } = params;
+  const { id } = await params;
   const { query, filter } = await searchParams;
 
   const { user, videos } = await getAllVideosByUser(id, query, filter);
 
-  if(!user) notFound()
+  if (!user) redirect("/404");
 
   return (
     <div className="wrapper page">
