@@ -45,8 +45,7 @@ const authHandlers = toNextJsHandler(auth.handler);
 
 // CORS headers
 const corsHeaders = {
-  "Access-Control-Allow-Origin":
-    "https://snap-cast-v14s5a3pu-emran-hossains-projects-fe5d2754.vercel.app",
+  "Access-Control-Allow-Origin": "https:https://snap-cast-one.vercel.app",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
