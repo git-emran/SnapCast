@@ -38,7 +38,7 @@ const Page = () => {
               interface is intuitive, and it is perfect for both personal and
               professional use.
             </p>
-            <h2>SnapCast | Designed &Built By Emran Hossain</h2>
+            <h2>SnapCast | Designed & Built By Emran Hossain</h2>
           </section>
         </div>
         <p>Snapcast {new Date().getFullYear()}</p>
