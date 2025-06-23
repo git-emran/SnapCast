@@ -19,6 +19,7 @@ const Page = () => {
             width={32}
           />
           <h1>SnapCast</h1>
+          <h2>By Emran Hossain</h2>
         </Link>
         <div className="description">
           <section>
@@ -39,13 +40,6 @@ const Page = () => {
               professional use.
             </p> 
             <article>
-              <Image
-                src="/assets/images/jason.png"
-                alt="jason"
-                width={64}
-                height={64}
-                className="rounded-full"
-              />
               <div>
                 <h2>Peri Mukuben</h2>
                 <p>Product Designer, NovaByte</p>
