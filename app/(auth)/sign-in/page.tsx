@@ -37,7 +37,7 @@ const Page = () => {
               Snapcast makes screening and sharing videos a breeze. The
               interface is intuitive, and it is perfect for both personal and
               professional use.
-            </p>
+            </p> 
             <article>
               <Image
                 src="/assets/images/jason.png"
