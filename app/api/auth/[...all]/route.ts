@@ -2,18 +2,19 @@ import { toNextJsHandler } from "better-auth/next-js";
 import { auth } from "@/lib/auth";
 import aj from "@/lib/arcjet";
 import arcjet, { slidingWindow, validateEmail } from "@arcjet/next";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import type { ArcjetDecision } from "@arcjet/next";
 import ip from "@arcjet/next";
 
-//Email Vaildation
+// Email Validation
 const emailValidation = aj.withRule(
   validateEmail({
     mode: "LIVE",
     block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
   })
 );
-//Rate Limit
+
+// Rate Limit
 const rateLimit = aj.withRule(
   slidingWindow({
     mode: "LIVE",
@@ -42,22 +43,67 @@ const protectedAuth = async (req: NextRequest): Promise<ArcjetDecision> => {
 
 const authHandlers = toNextJsHandler(auth.handler);
 
-export const { GET } = authHandlers;
+// CORS headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin":
+    "https://snap-cast-v14s5a3pu-emran-hossains-projects-fe5d2754.vercel.app",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// Handle OPTIONS preflight request
+export const OPTIONS = async () => {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+};
+
+export const GET = async (req: NextRequest) => {
+  const response = await authHandlers.GET(req);
+  // Add CORS headers to GET response
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
+};
 
 export const POST = async (req: NextRequest) => {
   const decision = await protectedAuth(req);
   if (decision.isDenied()) {
     if (decision.reason.isEmail()) {
-      throw new Error("Email validation Failed");
+      return new NextResponse(
+        JSON.stringify({ error: "Email validation failed" }),
+        {
+          status: 400,
+          headers: corsHeaders,
+        }
+      );
     }
-
     if (decision.reason.isRateLimit()) {
-      throw new Error("Rate Limit Exceeded");
+      return new NextResponse(
+        JSON.stringify({ error: "Rate limit exceeded" }),
+        {
+          status: 429,
+          headers: corsHeaders,
+        }
+      );
     }
-
     if (decision.reason.isShield()) {
-      throw new Error("Sheild turned on, Better Luck next time");
+      return new NextResponse(
+        JSON.stringify({ error: "Shield turned on, better luck next time" }),
+        {
+          status: 403,
+          headers: corsHeaders,
+        }
+      );
     }
   }
-  return authHandlers.POST(req);
+
+  const response = await authHandlers.POST(req);
+  // Add CORS headers to POST response
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
 };
