@@ -1,0 +1,18 @@
+{
+  "done": true,
+  "migration": {
+    "name": "sql_448ea2a91fb688",
+    "operations": [
+      {
+        "sql": {
+          "up": "ALTER TABLE account ADD CONSTRAINT account_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES bb_hpqa2v12qt2tr1uj9j4od5g4sg_euiqti.\"user\" (id) ON DELETE CASCADE"
+        }
+      }
+    ]
+  },
+  "migrationType": "inferred",
+  "name": "sql_448ea2a91fb688",
+  "parent": "sql_150cb3d15fd145",
+  "schema": "public",
+  "startedAt": "2025-06-15T06:50:19.995555Z"
+}
