@@ -1,12 +1,4 @@
-import arcjet from "@arcjet/next";
-import { getEnv } from "./utils";
 
-const aj = arcjet({
-  key: getEnv("ARCJET_API_KEY"),
-  rules: [],
-});
-
-export default aj;
 import arcjet, {
   detectBot,
   fixedWindow,
@@ -30,8 +22,6 @@ export {
   createMiddleware,
   ArcjetDecision,
 };
-
-// Create a base Arcjet instance for use by each handler
 const aj = arcjet({
   key: getEnv("ARCJET_API_KEY"),
   rules: [],
