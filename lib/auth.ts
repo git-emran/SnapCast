@@ -4,12 +4,6 @@ import { db } from "@/drizzle/db";
 import { schema } from "@/drizzle/schema";
 import { nextCookies } from "better-auth/next-js";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-
-if (!baseURL) {
-  throw new Error("❌ Missing NEXT_PUBLIC_BASE_URL in environment variables.");
-}
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -22,5 +16,5 @@ export const auth = betterAuth({
     },
   },
   plugins: [nextCookies()],
-  baseURL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL!,
 });

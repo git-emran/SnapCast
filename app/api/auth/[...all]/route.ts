@@ -1,7 +1,7 @@
 import { toNextJsHandler } from "better-auth/next-js";
 import { auth } from "@/lib/auth";
 import aj from "@/lib/arcjet";
-import arcjet, { slidingWindow, validateEmail } from "@arcjet/next";
+import { slidingWindow, validateEmail } from "@arcjet/next";
 import { NextRequest } from "next/server";
 import type { ArcjetDecision } from "@arcjet/next";
 import ip from "@arcjet/next";
