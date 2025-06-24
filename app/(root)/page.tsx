@@ -12,7 +12,7 @@ type SearchParams = {
 
 const Page = async ({ searchParams }: SearchParams) => {
   const { query, filter, page } = searchParams;
-  const { videos, pagination } = await getAllVideos(
+  const { } = await getAllVideos(
     query,
     filter,
     Number(page) || 1
