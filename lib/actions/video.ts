@@ -225,7 +225,7 @@ export const getAllVideosByUser = withErrorHandling(
       eq(videos.userId, userIdParameter),
       !isOwner && eq(videos.visibility, "public"),
       searchQuery.trim() && ilike(videos.title, `%${searchQuery}%`),
-    ].filter(Boolean) as any[];
+    ].filter(Boolean) as never[];
 
     const userVideos = await buildVideoWithUserQuery()
       .where(and(...conditions))
