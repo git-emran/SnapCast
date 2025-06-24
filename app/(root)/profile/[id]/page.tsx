@@ -4,7 +4,6 @@ import { getAllVideosByUser } from "@/lib/actions/video";
 import { redirect } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 
-
 const Page = async ({ params, searchParams }: ParamWithSearch) => {
   const { id } = await params;
   const { query, filter } = await searchParams;
