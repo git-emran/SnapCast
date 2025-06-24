@@ -55,22 +55,13 @@ export const POST = async (req: NextRequest) => {
     const decision = await protectedAuth(req);
     if (decision.isDenied()) {
       if (decision.reason.isEmail()) {
-        return NextResponse.json(
-          { error: "Email validation failed" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Email validation failed" }, { status: 400 });
       }
       if (decision.reason.isRateLimit()) {
-        return NextResponse.json(
-          { error: "Rate limit exceeded" },
-          { status: 429 }
-        );
+        return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
       }
       if (decision.reason.isShield()) {
-        return NextResponse.json(
-          { error: "Shield turned on, try again later" },
-          { status: 403 }
-        );
+        return NextResponse.json({ error: "Shield turned on, try again later" }, { status: 403 });
       }
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
@@ -79,10 +70,7 @@ export const POST = async (req: NextRequest) => {
     // Log the error for debugging
     console.error("Auth POST error:", error);
     return NextResponse.json(
-      {
-        error: "Internal Server Error",
-        details: error instanceof Error ? error.message : String(error),
-      },
+      { error: "Internal Server Error", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
