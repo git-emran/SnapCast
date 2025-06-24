@@ -1,6 +1,5 @@
 "use client";
 
-import { signOut } from "better-auth/api";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,7 +8,6 @@ const Navbar = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const user = session?.user;
-
 
   return (
     <header className="navbar">

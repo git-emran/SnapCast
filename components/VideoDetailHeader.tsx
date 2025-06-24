@@ -10,10 +10,7 @@ const VideoDetailHeader = ({
   createdAt,
   userImg,
   username,
-  videoId,
   ownerId,
-  visibility,
-  thumbnailUrl,
   id,
 }: VideoDetailHeaderProps) => {
   const router = useRouter();
