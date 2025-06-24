@@ -4,12 +4,6 @@ import { getAllVideosByUser } from "@/lib/actions/video";
 import { redirect } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 
-type ParamWithSearch = {
-  params: {
-    id: string;
-    [key: string]: string; // This allows for additional search parameters
-  };
-};
 
 const Page = async ({ params, searchParams }: ParamWithSearch) => {
   const { id } = await params;
