@@ -27,16 +27,9 @@ const FileInput = ({
   return (
     <section className="file-input cursor-pointer">
       <label htmlFor={id}>{label}</label>
-      <input
-        type="file"
-        id={id}
-        accept={accept}
-        ref={inputRef}
-        hidden
-        onChange={onChange}
-      />
+      <input type="file" id={id} accept={accept} ref={inputRef} hidden />
       {!previewUrl ? (
-        <figure>
+        <figure onChange={onChange}>
           <Image
             src="/assets/icons/upload.svg"
             alt="upload"
