@@ -3,6 +3,7 @@
 Welcome to SnapCast – your all-in-one screen recording and sharing solution! Think of it as the Loom alternative you didn’t know you needed (but now absolutely do). Whether you’re demoing, teaching, or just want to show off your cat’s latest computer mishap, SnapCast has you covered.
 
 ---
+![SnapCast by Emran](https://github.com/user-attachments/assets/95e9753b-6113-48de-ae47-14ea4f4edcc4)
 
 ## 🚀 Features at a Glance
 
@@ -13,6 +14,8 @@ Welcome to SnapCast – your all-in-one screen recording and sharing solution! T
 - **TypeScript Powered:** Because type safety is the new black.
 
 ---
+
+
 
 ## 🧐 Detailed View
 
